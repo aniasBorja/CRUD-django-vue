@@ -21,7 +21,6 @@
                                 <button class="btn btn-primary btn-sm" @click="editItem(book)">Editar</button>
                                 <button class="btn btn-primary btn-danger btn-sm" @click="editItem(book)">Eliminar</button>
                                 
-
                             </td>
                             </tr>
                         </tbody>
