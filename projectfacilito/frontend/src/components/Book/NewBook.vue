@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col text-left">
-                <h2>Editar Libro</h2>
+                <h2>Nuevo Libro</h2>
             </div>
         </div>
         <div class="row">
@@ -25,7 +25,7 @@
                             </div>
                             <div class="rows">
                                 <div class="col text-left">                                  
-                                        <button type="submit" class="btn btn-primary ">Guardar</button>
+                                        <button type="submit" class="btn btn-primary ">Crear</button>
                                     <router-link :to="{ name: 'ListBook' }">
                                         <button type="button" class="btn btn-primary btn-dangerS">Cancelar</button>
                                     </router-link>
@@ -44,7 +44,6 @@ import swal from 'sweetalert'
 export default{
     data() {
         return {
-            bookId: this.$route.params.bookId,
             form: {
                 title: '',
                 description: ''
@@ -57,35 +56,24 @@ export default{
 
             evt.preventDefault()
 
-            const path = `http://localhost:8000/api/v1.0/books/${this.bookId}/`
+            const path = `http://localhost:8000/api/v1.0/books/`
 
-           axios.put(path, this.form).then((response) =>{
+           axios.post(path, this.form).then((response) =>{
 
             this.form.title = response.data.title
             this.form.description = response.data.description
 
-            swal("Libro actualizado exitosamente", "","success")
+            swal("Libro creado exitosamente", "","success")
             location.href='/books'
            })
            .catch((error)=>{
+            swal("El Libro no creado ", "","error")
             console.log(error)
            })
         },
 
-        getBook(){
-           const path = `http://localhost:8000/api/v1.0/books/${this.bookId}`
-
-           axios.get(path).then((response) =>{
-            this.form.title = response.data.title
-            this.form.description = response.data.description
-           })
-           .catch((error)=>{
-            console.log(error)
-           })
-        }
     },
     created(){
-        this.getBook()
     }
     
 }

@@ -3,6 +3,9 @@
         <div class="row" >
             <div class="col-md-12 text-left">
                 <h2>Listado de Libros </h2>
+                <router-link :to="{ name: 'NewBook'}" variant="Primary">
+                    <button class="btn btn-success btn-sm">Nuevo Libro</button>
+                </router-link>
                     <div class="col-md-12"> 
                         <!-- Tabla con Bootstrap 5 -->
                         <table class="table table-striped table-hover">
@@ -14,14 +17,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="book in books" :key="book.id">
+                            <tr v-for="book in books" >
                             <td>{{ book.title }}</td>
                             <td>{{ book.description }}</td>
                             <td>
-                                <button class="btn btn-primary btn-sm" @click="editItem(book)">Editar</button>
-                                <button class="btn btn-primary btn-danger btn-sm" @click="editItem(book)">Eliminar</button>
-                                
-                            </td>
+                                <router-link :to="{ name: 'EditBook', params:{bookId: book.id}}">
+                                <button class="btn btn-primary btn-sm">Editar</button> </router-link>
+                                <router-link :to="{ name: 'DeleteBook', params:{bookId: book.id}}">
+                                <button class="btn btn-primary btn-danger btn-sm"  >Eliminar</button></router-link>
+                             </td>
                             </tr>
                         </tbody>
                         </table>
@@ -33,21 +37,24 @@
 
 <script >
 import axios from 'axios';
+import deleteBook from './DeleteBook.vue';
+import EditBook  from './EditBook.vue';
 
 export default{
     data (){
         return {
-            fields: [
+            books: [
                 {key: 'title', label:'Título'},
                 {key: 'description', label:'Descripción'},
                 {key: 'action', label: 'Acción'}
-            ],
+            ], 
             books: []
         }
     },
     methods:{
 
         getBooks(){
+
 
             const path = 'http://localhost:8000/api/v1.0/books/'
             axios.get(path).then((response) => {
